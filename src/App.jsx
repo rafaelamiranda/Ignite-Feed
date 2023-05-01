@@ -6,6 +6,34 @@ import styles from './App.module.css';
 
 import './global.css';
 
+const posts = [
+  {
+    id: 1,
+    author: {
+      avatarUrl: "https://github.com/jakeliny.png",
+      name: "Jakeliny",
+      role: "Educator @Rocketseat"
+    },
+    content: [
+      { type: "paragraph", content: "Fala galeraa 👋" },
+      { type: "paragraph", content: "Acabei de subir mais um projeto no meu portifa. É um projeto que fiz no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀" },
+      { type: "link", content: "jane.design/doctorcare"},
+    ],
+    publishedAt: new Date('2023-04-30 20:00:00'),
+  }, {
+    id: 2,
+    author: {
+      avatarUrl: "https://github.com/diego3g.png",
+      name: "Diego Fernandes",
+      role: "CTO @Rocketseat"
+    },
+    content: [
+      { type: "paragraph", content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam quisquam molestias deserunt voluptatibus odio odit? Atque, beatae assumenda architecto in delectus aut maxime ipsa porro quam dolor est harum natus." }, 
+    ],
+    publishedAt: new Date('2023-05-01 19:10:00'),
+  },
+];
+
 function App() {
 
   return (
@@ -14,14 +42,16 @@ function App() {
       <div className={styles.wrapper}>
         <Sidebar />
         <main>
-          <Post
-          author="Rafaela Miranda" 
-          content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt omnis obcaecati corporis aperiam iusto, harum et saepe totam assumenda eveniet! Vero quas, asperiores at illo sequi a aliquam vitae laudantium?" 
-        />   
-        <Post
-          author="Diego Fernandes" 
-          content="Um novo post muito legal" 
-        />     
+          {posts.map(post => {
+            return (
+              <Post 
+                key={post.id}
+                author={post.author}
+                content={post.content}
+                publishedAt={post.publishedAt}
+              />
+            )
+          })}
         </main>
       </div>
     </>
