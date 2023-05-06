@@ -1,13 +1,30 @@
 import { format, formatDistanceToNow } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR'
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, InvalidEvent, useState } from 'react';
 
 import { Avatar } from './Avatar';
 import { Comment } from './Comment';
 
 import styles from './Post.module.css';
 
-export function Post({author, publishedAt, content}) {
+interface Author {
+  name: string;
+  role: string;
+  avatarUrl: string;
+}
+
+interface Content {
+  type: 'paragraph' | 'link';
+  content: string;
+}
+
+interface PostProps {
+  author: Author;
+  publishedAt: Date;
+  content: Content[];
+}
+
+export function Post({author, publishedAt, content} : PostProps) {
   const [comments, setComments] = useState([
     "Post muito bacana, hein?!",
   ]);
@@ -23,23 +40,23 @@ export function Post({author, publishedAt, content}) {
     addSuffix: true,
   });
 
-  function handleCreateNewComment() {
-    event.preventDefault();
-    const newCommentText = event.target.comment.value;
+  function handleCreateNewComment(e: FormEvent) {
+    e.preventDefault();
+
     setComments([...comments, newCommentText]);
     setNewCommentText('');
   }
 
-  function handleNewCommentChange() {
-    event.target.setCustomValidity('');
-    setNewCommentText(event.target.value);
+  function handleNewCommentChange(e : ChangeEvent<HTMLTextAreaElement>) {
+    e.target.setCustomValidity('');
+    setNewCommentText(e.target.value);
   }
 
-  function handleNewCommentInvalid() {
-    event.target.setCustomValidity('Por favor, insira um comentário válido.');
+  function handleNewCommentInvalid(e : InvalidEvent<HTMLTextAreaElement>) {
+    e.target.setCustomValidity('Por favor, insira um comentário válido.');
   }
 
-  function deleteComment(commentToDelete) {
+  function deleteComment(commentToDelete: string) {
     const commentsWithoutDeletedOne = comments.filter(comment => {
       return comment !== commentToDelete;
     })
